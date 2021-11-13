@@ -1,0 +1,276 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktik</title>
+    <style>
+        .layoutform {
+            display: grid;
+            grid-area: auto;
+            grid-template-columns: 200px 300px 1fr;
+            grid-gap: 16px;
+        }
+        .layoutmain {
+            display: grid;
+            grid-template-columns: 100px 1fr 100px;
+            grid-gap: 16px;
+        }
+
+        .pesanerror {
+            color: red;
+        }
+
+        .switch {
+            position: relative;
+            display: flex;
+            background-color: rgb(179, 223, 235);
+            border-radius: 30px;
+            width: 105px;
+
+        }
+
+
+        .switch::after {
+            content: '';
+            position: absolute;
+            left: 63px;
+            transition: 0.3s ease;
+        }
+
+        .yes {
+            font-family: times;
+            padding: 9px 12px;
+            border-radius: 30px;
+            text-align: center;
+            margin-left: 1px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            color: white;
+           
+        }
+
+        .yes:hover {
+            background-color: rgba(123, 182, 221, 0.815);
+        }
+
+        .no {
+            font-family: times;
+            padding: 9px 14px;
+            background-color : rgba(37, 139, 207, 0.815);
+            border-radius: 30px;
+            text-align: center;
+            margin-left: 4px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            color: white;
+        }
+
+        .no:hover {
+            background-color: rgba(123, 182, 221, 0.815);
+        }
+
+    </style>
+</head>
+<body>
+    <form method="post" action="koneksiphp.php"  class="layoutmain">
+        <br>
+        <fieldset class="layoutform">
+            <legend>Registrasi</legend>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username" 
+            title="Input username" onfocusout="cekUsername()"><div id="msgusername" 
+            class="pesanerror"></div>
+            <br>
+            <fieldset>
+                <legend>Gender</legend>
+                <input type="radio" id="male" name="gender" value="male" checked>Laki - laki</input>
+                <input type="radio" id="female" name="gender" value="female" checked>Perempuan</input>
+            </fieldset> 
+            <div id="msggender"></div>
+
+            <label for="tempatlahir">Tempat Lahir</label>
+            <input type="text" id="tempatlahir" name="tempatlahir"
+            placeholder="Tempat Lahir" title="Input tanggal lahir" 
+            onfocusout="cekTempatlahir()"><div id="msgtempatlahir" class="pesanerror"></div>
+            
+            <label for="tanggallahir">Tanggal Lahir</label>
+            <input type="date" id="tanggallahir" name="tanggallahir"
+            placeholder="Tanggal Lahir" title="Input tanggal lahir" 
+            onfocusout="cekTanggallahir()"><div id="msgtanggallahir" class="pesanerror"></div>
+
+        
+            <label for=""> Apakah ingin mengisi nomor telepon?</label>
+            <label class="switch">
+                <div class="yes" onclick="tab2()">Yes</div>
+                <div class="no" onclick="tab1()">No</div>
+    
+            </label>
+            <br>
+
+            <label for="notelepon">Nomor Telepon</label>
+            <input type="type" disabled id="notelepon" name="notelepon"
+            placeholder="Nomor telepon" title="Input nomor telepon" 
+            onfocusout="cekNomortelepon()"><div id="msgnomortelepon" class="pesanerror"></div>
+
+            <label for="password1">Password</label>
+            <input type="password" id="password1" name="password1"
+            placeholder="Password" title="Input Password" 
+            onfocusout="cekPassword()"><div id="msgpassword" class="pesanerror"></div>
+
+            <label for="password2">Konfirmasi Password</label>
+            <input type="password" id="password2" name="password2"
+            placeholder="Konfirmasi Password" title="Input Konfirmasi Password" 
+            onfocusout="cekKonfirmasiPassword()"><div id="msgpassword2" 
+            class="pesanerror"></div>
+            <input type="button" name="Submit" id="Submit" value="Submit" onclick="goSubmit()">
+            <input type="button" name="Cancel" id="Cancel" value="Cancel" onclick="goCancel()">
+            <br>
+
+        </fieldset>
+    </form>
+</body>
+<script>
+    const telepon = document.getElementById("notelepon");
+    const yes = document.querySelector(".yes");
+    const no = document.querySelector(".no");
+    const switchs = document.querySelectorAll(".switch");
+    let current = 1;
+    
+    function tab2() {
+        no.style.background = "none" ;
+        yes.style.background = "rgba(37, 139, 207, 0.815)";
+        telepon.disabled = false;
+        switchs[current - 1].classList.add("active");
+    }
+
+    function tab1() {
+        no.style.background = "rgba(37, 139, 207, 0.815)";
+        yes.style.background = "none";
+        telepon.disabled = true;
+        switchs[current - 1].classList.remove("active");
+    }
+
+    function cekUsername() {
+        let username = document.getElementById('username').value;
+        let pesan = "";
+        if (username == "" || username == null) {
+            pesan = "Username harus diisi!";
+            document.getElementById("msgusername").innerHTML = pesan;
+    }  else {
+        pesan = "";
+        document.getElementById("msgusername").innerHTML = pesan;
+    }
+
+    }
+
+    function cekTempatlahir() {
+        let tempatlahir = document.getElementById('tempatlahir').value;
+        let pesan = "";
+        if (tempatlahir == "" || tempatlahir == null) {
+            pesan = "Tempat lahir harus diisi!";
+        }
+        document.getElementById("msgtempatlahir").innerHTML = pesan;
+    }
+
+    function cekTanggallahir() {
+        let tanggallahir = new Date(document.getElementById('tanggallahir').value);
+        let tanggal = new Date();
+        tanggal.setFullYear(tanggal.getFullYear()-10);
+        let n = tanggal.getFullYear();
+        let v = tanggal.getFullYear();
+        let pesan = "";
+
+        if (v >= n) {
+            pesan = "Usia anda terlalu muda untuk melakukan registrasi!";
+        }
+        document.getElementById("msgtanggallahir").innerHTML = pesan;
+    }
+
+    function cekNomortelepon() {
+        let notelp = document.getElementById('notelepon').value;
+        let pesan = "";
+        if (notelp.length == 0) {
+            pesan = "Nomor telepon tidak boleh kosong!";
+        }
+        document.getElementById("msgnomortelepon").innerHTML = pesan;
+    }
+
+    function cekPassword() {
+        let password = document.getElementById('password1').value;
+        let pesan = "";
+        if (password.length == 0) {
+            pesan = "Password harus diisi!";
+            document.getElementById("msgpassword").innerHTML = pesan;
+        } else {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    pesan = this.responseText;
+                    document.getElementById("msgpassword").innerHTML = pesan;
+                }
+            }
+            xmlhttp.open("GET", "validatePassword.php?q=" + password, true);
+            xmlhttp.send();
+        }
+    }
+
+    function cekKonfirmasiPassword() {
+        let val1 = document.getElementById("password1").value;
+        let val2 = document.getElementById("password2").value;
+        let pesan = "";
+        if (val2 != val1) {
+            pesan = "Password tidak sama!";
+        }
+        document.getElementById("msgpassword2").innerHTML = pesan;
+    }
+
+    function goSubmit() {
+        let vusername = document.getElementById('username').value;
+        let vgender = ""
+        if (document.getElementById('male').checked) {
+            vgender = "male";
+        } else {
+            vgender = "female";
+        }
+        let vtempatlahir = document.getElementById('tempatlahir').value;
+        let vtanggallahir = document.getElementById('tanggallahir').value;
+        let vpassword = document.getElementById('password1').value;
+        let pesan;
+
+        const Myobj = {
+            username : vusername,
+            gender : vgender,
+            tempatlahir : vtempatlahir,
+            tanggallahir : vtanggallahir,
+            password : vpassword
+        };
+
+        const MyJSON = JSON.stringify(Myobj);
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    pesan = this.responseText;
+                    window.alert(pesan);
+                }
+            };
+            xmlhttp.open("GET", "reguser.php?q=" + MyJSON, true);
+            xmlhttp.send();
+
+    }
+
+    function goCancel() {
+        document.getElementById('username').value = "";
+        document.getElementById('male').checked = true;
+        document.getElementById('tempatlahir').value = "";
+        document.getElementById('tanggallahir').value = "";
+        document.getElementById("password1").value = "";
+        document.getElementById("password2").value = "";
+
+    }
+
+</script>
+</html>
